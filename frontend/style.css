@@ -1,0 +1,328 @@
+/* --- 1. Variables & Reset --- */
+:root {
+    --bg-main: #09090b;       /* Deepest Black/Blue */
+    --bg-panel: #18181b;      /* Slightly lighter for panels */
+    --bg-glass: rgba(24, 24, 27, 0.7); /* See-through effect */
+    
+    --primary: #818cf8;       /* Modern Indigo */
+    --primary-glow: rgba(129, 140, 248, 0.3);
+    --accent: #22d3ee;        /* Cyan for highlights */
+    
+    --text-main: #f4f4f5;
+    --text-muted: #a1a1aa;
+    
+    --border: 1px solid rgba(255, 255, 255, 0.08);
+    --radius: 12px;           /* Softer corners */
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif; /* Clean Pro Font */
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent body scroll on desktop */
+}
+
+/* --- 2. Floating Glass Navbar --- */
+/* --- 2. Floating Glass Navbar --- */
+.navbar {
+    height: 70px;
+    background: var(--bg-glass);
+    
+    /* 1. Add this line specifically for Safari/iOS */
+    -webkit-backdrop-filter: blur(12px);
+    
+    /* 2. Standard command for Chrome/Edge/Firefox */
+    backdrop-filter: blur(12px); 
+    
+    border-bottom: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(to right, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; /* Gradient Text */
+    letter-spacing: -0.5px;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+}
+
+/* Modern Dropdown */
+select {
+    background: #27272a;
+    color: var(--text-main);
+    border: var(--border);
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s;
+}
+
+select:hover { border-color: var(--primary); }
+
+/* Download Button - Secondary Style */
+.btn-download {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    display: flex; /* Aligns icon and text */
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-download:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(129, 140, 248, 0.1);
+}
+/* Gradient Button with Glow */
+.btn-analyze {
+    background: linear-gradient(135deg, var(--primary), #6366f1);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px var(--primary-glow);
+    transition: all 0.3s ease;
+}
+
+.btn-analyze:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(129, 140, 248, 0.5);
+}
+
+.btn-analyze:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* --- 3. Layout Grid --- */
+.container {
+    display: flex;
+    flex: 1;
+    gap: 0;
+    overflow: hidden;
+}
+
+/* --- 4. Panels --- */
+.editor-panel, .output-panel {
+    flex: 1;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-main);
+}
+
+.editor-panel {
+    border-right: var(--border);
+    background: radial-gradient(circle at top left, #1c1c22, var(--bg-main));
+}
+
+.panel-header {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- 5. Code Editor (Monaco Style) --- */
+textarea#codeEditor {
+    flex: 1;
+    background-color: #121215;
+    color: #e4e4e7;
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+}
+
+textarea#codeEditor:focus {
+    border-color: var(--primary);
+}
+
+/* --- 6. AI Output Area --- */
+.output-panel {
+    background: var(--bg-panel);
+    overflow-y: auto; /* Scroll ONLY the right side */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: #27272a;
+    padding: 5px;
+    border-radius: 10px;
+    width: fit-content;
+}
+/* --- Tab Content Logic --- */
+
+/* 1. Hide ALL content sections by default */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+/* 2. Only show the section that has the 'active' class */
+.tab-content.active {
+    display: block;
+}
+
+/* Optional: Smooth fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.tab:hover { color: white; }
+
+.tab.active {
+    background: var(--bg-panel);
+    color: var(--primary);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Cards */
+.card {
+    background: #27272a;
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.card:hover { transform: translateY(-2px); }
+
+.card h3 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 10px;
+}
+
+.card h3 i { color: var(--primary); }
+.error-card h3 i { color: #f87171; }
+
+.text-content {
+    color: #d4d4d8;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* Optimized Code Block */
+.code-container { position: relative; }
+
+.code-block {
+    background: #101012 !important;
+    border-radius: var(--radius);
+    border: var(--border);
+    padding: 15px;
+    overflow-x: auto;
+    margin-top: 16px;
+}
+
+.btn-copy {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #d4d4d8;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.2s;
+    
+    /* Fix for Safari Blur */
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    
+    z-index: 10;
+}
+
+.btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* Stats Row */
+.stats-row { display: flex; gap: 15px; }
+.stat-box {
+    background: rgba(129, 140, 248, 0.1); /* Tinted background */
+    border: 1px solid rgba(129, 140, 248, 0.2);
+    padding: 15px;
+    border-radius: var(--radius);
+    flex: 1;
+    text-align: center;
+}
+.stat-box small { color: var(--primary); display: block; margin-bottom: 5px; font-weight: 600; }
+.stat-box span { font-weight: 700; color: white; font-size: 1.1rem; }
+
+/* --- 7. Mobile Responsive --- */
+@media screen and (max-width: 768px) {
+    body { height: auto; overflow-y: auto; }
+    .container { flex-direction: column; }
+    .editor-panel { min-height: 400px; border-bottom: var(--border); }
+    .navbar { flex-wrap: wrap; height: auto; padding: 15px; gap: 15px; }
+    .controls { width: 100%; }
+    select, .btn-analyze { flex: 1; }
+}

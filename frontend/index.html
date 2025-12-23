@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Mentor</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-robot"></i> AI Code Mentor
+        </div>
+        <div class="controls">
+            <select id="languageSelect" aria-label="Select Programming Language">
+                <option value="java">Java</option>
+                <option value="python">Python</option>
+                <option value="javascript">JavaScript</option>
+                <option value="cpp">C++</option>
+                <option value="csharp">C#</option>
+                <option value="go">Go</option>
+                <option value="rust">Rust</option>
+                <option value="kotlin">Kotlin</option>
+                <option value="swift">Swift</option>
+                <option value="php">PHP</option>
+            </select>
+            <button class="btn-analyze" onclick="analyzeCode()">
+                <i class="fa-solid fa-bolt"></i> Analyze Code
+            </button>
+             <button id="btn-download" class="btn-download" onclick="downloadReport()" style="display: none;">
+                    <i class="fa-solid fa-download"></i> Save Report
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <div class="editor-panel">
+            <div class="panel-header">
+                <span><i class="fa-solid fa-code"></i> Source Code</span>
+            </div>
+            <textarea id="codeEditor" placeholder="// Paste your code here..." spellcheck="false"></textarea>
+        </div>
+
+        <div class="output-panel">
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('logic')">Logic & Bugs</button>
+                <button class="tab" onclick="switchTab('optimized')">Refactored Code</button>
+            </div>
+
+            <div id="tab-logic" class="tab-content active">
+                <div class="card">
+                    <h3><i class="fa-solid fa-lightbulb"></i> Logic Explanation</h3>
+                    <div id="logicOutput" class="text-content">
+                        Analysis will appear here...
+                    </div>
+                </div>
+
+                <div class="card error-card">
+                    <h3><i class="fa-solid fa-bug"></i> Bugs Found</h3>
+                    <div id="bugsOutput" class="text-content">
+                        Bugs will appear here...
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-optimized" class="tab-content">
+                <div class="code-container">
+                    <button class="btn-copy" onclick="copyToClipboard()">
+                        <i class="fa-regular fa-copy"></i> Copy
+                    </button>
+
+                    <pre><code id="optimizedCode" class="language-java">/* Refactored code will appear here */</code></pre>
+                </div>
+            </div>
+
+            <div class="stats-row" style="margin-top: 10px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <div class="stat-box">
+                    <small>Time Complexity</small>
+                    <span id="timeOutput">-</span>
+                </div>
+                <div class="stat-box">
+                    <small>Space Complexity</small>
+                    <span id="spaceOutput">-</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-swift.min.js"></script>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup-templating.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-php.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+</body>
+
+</html>
