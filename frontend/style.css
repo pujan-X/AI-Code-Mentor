@@ -326,3 +326,44 @@ textarea#codeEditor:focus {
     .controls { width: 100%; }
     select, .btn-analyze { flex: 1; }
 }
+/* =========================================
+   📱 MOBILE RESPONSIVENESS (Add to Bottom)
+   ========================================= */
+@media screen and (max-width: 768px) {
+
+    /* 1. Fix Main Container Width */
+    .container {
+        width: 95%;
+        margin: 20px auto;
+        padding: 1.5rem;
+    }
+
+    /* 2. Stack Time & Space Complexity Vertically */
+    .complexity-grid {
+        display: flex;
+        flex-direction: column; /* This forces them to stack! */
+        gap: 15px;
+    }
+
+    /* 3. Make the Boxes Full Width */
+    .complexity-card {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    /* 4. Fix Buttons for Thumbs */
+    .analyze-btn {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.1rem;
+    }
+
+    /* 5. Adjust Font Sizes for readability */
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .logo {
+        font-size: 1.4rem;
+    }
+}
