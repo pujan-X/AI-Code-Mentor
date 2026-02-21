@@ -53,7 +53,7 @@ Built with a **Java Spring Boot** backend and a responsive **Glassmorphism UI**.
 
 **Pujan Suthar**
 * **GitHub:** [pujan-X](https://github.com/pujan-X)
-* **Role:** Head of Creative Domain @ DevClub | CS Student
+* **Role:**CS Student
 
 ---
 
