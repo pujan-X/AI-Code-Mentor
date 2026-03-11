@@ -29,11 +29,9 @@ public class AiService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public AnalysisResponse analyzeCode(AnalysisRequest request) {
-        // 1. Construct the Prompt
         String prompt = buildPrompt(request);
 
-        // 2. Build Gemini Request JSON Structure
-        // Format: { "contents": [{ "parts": [{"text": "..."}] }] }
+       
         Map<String, Object> requestBody = new HashMap<>();
         
         List<Map<String, Object>> contents = new ArrayList<>();
@@ -48,21 +46,19 @@ public class AiService {
         
         requestBody.put("contents", contents);
 
-        // 3. Prepare Headers
+      
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         
-        // Combine URL with API Key
+      
         String finalUrl = apiUrl + "?key=" + apiKey;
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 
         try {
-            // 4. Call Gemini API
             System.out.println("🤖 Sending request to Google Gemini...");
             String rawResponse = restTemplate.postForObject(finalUrl, entity, String.class);
             
-            // 5. Parse Gemini Response
             return parseGeminiResponse(rawResponse);
 
         } catch (Exception e) {
@@ -87,20 +83,18 @@ public class AiService {
 
     private AnalysisResponse parseGeminiResponse(String rawResponse) {
         try {
-            // Gemini JSON structure is deep: candidates[0] -> content -> parts[0] -> text
             JsonNode root = objectMapper.readTree(rawResponse);
             String aiText = root.path("candidates").get(0)
                                 .path("content").path("parts").get(0)
                                 .path("text").asText();
             
-            // Clean up Markdown wrappers if Gemini adds them
             String cleanJson = aiText.replace("```json", "").replace("```", "").trim();
             
             return objectMapper.readValue(cleanJson, AnalysisResponse.class);
         } catch (Exception e) {
             AnalysisResponse fallback = new AnalysisResponse();
             fallback.setLogicExplanation("Failed to parse Gemini response.");
-            fallback.setOptimizedCode(rawResponse); // Show raw data for debugging
+            fallback.setOptimizedCode(rawResponse); 
             return fallback;
         }
     }
