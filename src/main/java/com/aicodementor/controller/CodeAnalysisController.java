@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin(origins = "*") // Allows your Frontend to talk to this Backend
+@CrossOrigin(origins = "*") 
 public class CodeAnalysisController {
 
     @Autowired
